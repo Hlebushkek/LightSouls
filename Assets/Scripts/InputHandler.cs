@@ -12,7 +12,11 @@ namespace LS
         public float mouseX;
         public float mouseY;
 
-        PlayerControls inputAction;
+        public bool b_Input;
+        public bool rollFlag;
+        public bool isInteracting;
+
+        PlayerControls inputActions;
         CameraHandler cameraHandler;
 
         Vector2 movementInput;
@@ -34,24 +38,25 @@ namespace LS
         }
         public void OnEnable()
         {
-            if (inputAction == null)
+            if (inputActions == null)
             {
-                inputAction = new PlayerControls();
-                inputAction.PlayerMovement.Movement.performed += inputAction => movementInput = inputAction.ReadValue<Vector2>();
-                inputAction.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
+                inputActions = new PlayerControls();
+                inputActions.PlayerMovement.Movement.performed += inputAction => movementInput = inputAction.ReadValue<Vector2>();
+                inputActions.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
             }
 
-            inputAction.Enable();
+            inputActions.Enable();
         }
 
         private void OnDisable()
         {
-            inputAction.Disable();
+            inputActions.Disable();
         }
 
         public void TickInput(float delta)
         {
             MoveInput(delta);
+            HandleRollInput(delta);
         }
 
         private void MoveInput(float delta)
@@ -61,6 +66,17 @@ namespace LS
             moveAmount = Mathf.Clamp01(Mathf.Abs(horizontal) + Mathf.Abs(vertical));
             mouseX = cameraInput.x;
             mouseY = cameraInput.y;
+        }
+
+        public void HandleRollInput(float delta)
+        {
+            b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
+            Debug.Log(b_Input);
+            if (b_Input)
+            {
+                rollFlag = true;
+                Debug.Log("Roll");
+            }
         }
     }
 }
