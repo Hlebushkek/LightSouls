@@ -74,7 +74,7 @@ namespace LS
         public void HandleRollInput(float delta)
         {
             b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
-            Debug.Log(b_Input);
+
             if (b_Input)
             {
                 rollInputTimer += delta;

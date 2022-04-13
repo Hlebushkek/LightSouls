@@ -37,6 +37,8 @@ namespace LS
             myTransform = transform;
             defaultPosition = cameraTransform.localPosition.z;
             ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
+
+            Debug.Log("CameraHandler Awake");
         }
 
         public void FollowTarget(float delta)
@@ -45,6 +47,8 @@ namespace LS
                 (myTransform.position, targetTransform.position, ref cameraFollowVelocity, delta / followSpeed);
             myTransform.position = targetPosition;
 
+            Debug.Log(targetPosition);
+            
             HandleCameraCollisions(delta);
         }
 
